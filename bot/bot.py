@@ -3,6 +3,7 @@
 import os
 import sqlite3
 from contextlib import closing
+from datetime import datetime
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
@@ -53,6 +54,13 @@ if __name__ == "__main__":
         access_token_secret=os.getenv("ACCESS_TOKEN_SECRET"),
     )
 
+    if photo["created"] is not None:
+        created = datetime.fromisoformat(photo["created"])
+        created = created.strftime("%Y-%m")
+        tweet = f"Photographer: {photo['author']}, {created}"
+    else:
+        tweet = f"Photographer: {photo['author']}"
+
     with NamedTemporaryFile() as io:
         io.write(resp.content)
         io.flush()
@@ -62,7 +70,7 @@ if __name__ == "__main__":
         media_id = api.UploadMediaSimple(io)
         api.PostMediaMetadata(media_id, photo["title"])
         api.PostUpdate(
-            f"Photographer: {photo['author']}\n\n{archives_url(photo['naid'])}",
+            f"{tweet}\n\n{archives_url(photo['naid'])}",
             media=media_id,
         )
 
