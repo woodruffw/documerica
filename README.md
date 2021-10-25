@@ -17,3 +17,9 @@ for use with the Twitter bot
 records that are missing photographic scans
 * `make_db.py`: A Python script that creates `documerica.db` from `documerica.jsonl`
 * `bot/`: The Twitter bot
+
+## License
+
+The API results stored in the library are public domain.
+
+All other material is under a [modified MIT License](./LICENSE).
